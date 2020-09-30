@@ -1,0 +1,17 @@
+[
+{
+  "modid": "skyblockImproved",
+  "name": "SkyBlockImproved",
+  "description": "A mod for improving your Skyblock experience. Type /sbi to get started",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/q-256/SkyBlockImproved",
+  "updateUrl": "",
+  "authorList": ["q256"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
+
