@@ -890,8 +890,8 @@ public class ApiParser {
 
                     if(activeAccessories.containsKey(id)) continue;
                     if(inactiveAccessories.containsKey(id)){
-                        if(activeAccessories.get(id).ordinal()<rarity.ordinal()){
-                            activeAccessories.remove(id);
+                        if(inactiveAccessories.get(id).ordinal()<rarity.ordinal()){
+                            inactiveAccessories.remove(id);
                         } else {
                             continue;
                         }
