@@ -25,7 +25,7 @@ public class LividListener {
 
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event){
-        if(!main.getConfigValues().showLividDisplay.getValue()) return;
+        if(!main.getConfigValues().showLividMessage.getValue()) return;
         String unformattedText = event.message.getUnformattedText();
 
         if(unformattedText.equals("[BOSS] Livid: I respect you for making it to here, but I'll be your undoing.")){
