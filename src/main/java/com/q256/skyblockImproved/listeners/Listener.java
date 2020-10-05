@@ -139,12 +139,14 @@ public class Listener {
         String unformattedMessage = event.message.getUnformattedText();
 
         if(unformattedMessage.equals("This creature is immune to this kind of magic!")){
-            if(main.getConfigValues().playSoundOnMagicResist.getValue())GeneralUtils.playSound("note.bass", main.getConfigValues().magicResistSoundVolume.getValue(), 2);
+            if(main.getConfigValues().playSoundOnMagicResist.getValue()) GeneralUtils.playSound("note.bass", main.getConfigValues().magicResistSoundVolume.getValue(), 2);
             if(main.getConfigValues().hideMagicResistMessages.getValue()) event.setCanceled(true);
         }
 
-        if(main.getConfigValues().hideBatStaffHitMessages.getValue()
-                && unformattedMessage.matches("Your Bat Staff hit ((1 enemy)|(\\d+ enemies)) for \\d{1,3}(,\\d{3})*(\\.\\d)? damage.")) event.setCanceled(true);
+        if(unformattedMessage.matches("Your Bat Staff hit ((1 enemy)|(\\d+ enemies)) for \\d{1,3}(,\\d{3})*(\\.\\d)? damage.")){
+            if(main.getConfigValues().playSoundOnBatStaffHit.getValue()) GeneralUtils.playSound("random.orb", main.getConfigValues().batStaffHitVolume.getValue(), 1);
+            if(main.getConfigValues().hideBatStaffHitMessages.getValue())event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent
