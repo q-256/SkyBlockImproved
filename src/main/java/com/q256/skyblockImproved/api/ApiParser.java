@@ -639,7 +639,7 @@ public class ApiParser {
         Rarity[] petRarities = Rarity.getPetRarities();
         int[] petsPerRarity = new int[petRarities.length];
         for(Pet pet:allPets){
-            if(usedPetNames.contains(pet.name)) break;
+            if(usedPetNames.contains(pet.name)) continue;
             usedPetNames.add(pet.name);
             petsPerRarity[pet.rarity.ordinal()]++;
         }
