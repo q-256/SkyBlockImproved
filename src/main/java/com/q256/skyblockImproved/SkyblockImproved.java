@@ -6,6 +6,7 @@ import com.q256.skyblockImproved.config.ConfigHandler;
 import com.q256.skyblockImproved.config.ConfigValues;
 import com.q256.skyblockImproved.listeners.Listener;
 import com.q256.skyblockImproved.listeners.LividListener;
+import com.q256.skyblockImproved.listeners.SadanListener;
 import com.q256.skyblockImproved.party.PartyHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -55,9 +56,9 @@ public class SkyblockImproved {
 
         apiHandler = new ApiHandler();
         partyHandler = new PartyHandler();
-        MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new Listener());
         MinecraftForge.EVENT_BUS.register(new LividListener());
+        MinecraftForge.EVENT_BUS.register(new SadanListener());
 
         ClientCommandHandler.instance.registerCommand(new SBICommands());
     }
