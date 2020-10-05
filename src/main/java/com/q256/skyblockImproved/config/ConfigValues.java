@@ -17,22 +17,34 @@ public class ConfigValues {
             "General");
     public transient Setting<Boolean> showExpertiseKillCount = new Setting<>("Show expertise kill count",true,
             "Shows number of sea creatures killed by a fishing rod with the expertise enchant", "General");
-    public transient Setting<Boolean> hideMagicResistMessages = new Setting<>("Hide magic resist messages", false, "Hides any messages that say "+
-            "\"§cThis creature is immune to this kind of magic!§f\"");
-    public transient Setting<Boolean> playSoundOnMagicResist = new Setting<>("Play sound on magic resist",false, "Plays a sound when an opponent resists your magic damage",
-            "General");
-    public transient Setting<Double> magicResistSoundVolume = new Setting<>("Magic resist sound volume", 1.0, "Determines the volume of the sound that gets played " +
-            "when an opponent resists your magic damage (if enabled)");
-    public transient Setting<Boolean> showLividDisplay = new Setting<>("Show correct Livid color", false,
-            "Tells you what colored Livid is the real one", "General");
-    public transient Setting<Boolean> hideBatStaffHitMessages = new Setting<>("Hide spirit sceptre hit messages", false,
-            "Hides messages that tell you how many opponents your spirit sceptre hit", "General");
 
     //Re-add this if you can properly increase the chat character limit from 100 to 256
     /*
     public transient Setting<Boolean> longChat = new Setting<>("Higher chat character limit", false, "Increases the number of characters you can type in chat from 100 to 256. " +
             "May not work on other servers");
     */
+
+    public transient Setting<Boolean> showLividMessage = new Setting<>("Show correct Livid color", false,
+            "Tells you what colored Livid is the real one", "Dungeon boss fights");
+    public transient Setting<Boolean> showSadanGiantOverlay = new Setting<>("Show Sadan giant overlay", false,
+            "Shows an overlay that tells you the health of Sadan's giants", "Dungeon boss fights");
+    public transient Setting<Double> sadanGiantOverlayX = new Setting<>("Sadan giant overlay x pos", 0.01,
+            "The x position of the Sadan overlay", "Dungeon boss fights");
+    public transient Setting<Double> sadanGiantOverlayY = new Setting<>("Sadan giant overlay y pos", 0.025,
+            "The y position of the Sadan overlay", "Dungeon boss fights");
+
+    public transient Setting<Boolean> hideMagicResistMessages = new Setting<>("Hide magic resist messages", false, "Hides any messages that say "+
+            "\"§cThis creature is immune to this kind of magic!§f\"", "Abilities");
+    public transient Setting<Boolean> playSoundOnMagicResist = new Setting<>("Play sound on magic resist",false,
+            "Plays a sound when an opponent resists your magic damage", "Abilities");
+    public transient Setting<Double> magicResistSoundVolume = new Setting<>("Magic resist sound volume", 1.0,
+            "Determines the volume of the sound that gets played when an opponent resists your magic damage (if enabled)", "Abilities");
+    public transient Setting<Boolean> hideBatStaffHitMessages = new Setting<>("Hide spirit sceptre hit messages", false,
+            "Hides messages that tell you how many opponents your spirit sceptre hit", "Abilities");
+    public transient Setting<Boolean> playSoundOnBatStaffHit = new Setting<>("Play sound on spirit sceptre hit", false,
+            "Plays a sound whenever your spirit sceptre hits an opponent", "Abilities");
+    public transient Setting<Double> batStaffHitVolume = new Setting<>("Spirit sceptre hit volume", 1.0,
+            "Determines the volume of the sound that gets played when an your spirit sceptre hits an opponent (if enabled)", "Abilities");
 
     public transient Setting<Boolean> printCommandHelpOnBaseCommand = new Setting<>("Print command help on base command",true,
             "Prints a list of available commands when using §e/sbi", "/sbi command");
@@ -83,6 +95,9 @@ public class ConfigValues {
             } catch (ClassCastException exception){
                 exception.printStackTrace();
                 TextUtils.sendClientMessage("Failed to load "+entry.getKey()+" setting, using default value instead");
+            } catch (NullPointerException exception){
+                exception.printStackTrace();
+                TextUtils.sendClientMessage("Setting "+entry.getKey()+" does not exist");
             }
         }
     }
