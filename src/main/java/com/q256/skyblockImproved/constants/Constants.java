@@ -43,7 +43,7 @@ public class Constants {
         RANK_PLUS_COLORS.put("DARK_RED","§4");
         RANK_PLUS_COLORS.put("DARK_AQUA","§3");
         RANK_PLUS_COLORS.put("DARK_PURPLE","§5");
-        RANK_PLUS_COLORS.put("DARK_GREY","§8");
+        RANK_PLUS_COLORS.put("DARK_GRAY","§8");
         RANK_PLUS_COLORS.put("BLACK","§0");
     }
     public static final String[][] TALISMAN_UPGRADES = {
