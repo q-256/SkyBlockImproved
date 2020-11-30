@@ -81,7 +81,7 @@ public class ApiCache {
      * @return True if a new item was successfully added, false if the the item already existed
      */
     boolean addItem(String name, int type, JsonObject value){
-        cachedObjectsLock.readLock().lock();
+        cachedObjectsLock.writeLock().lock();
 
         for(CacheableJson cachedObj:cachedObjects){
             if(cachedObj.name.equalsIgnoreCase(name) && cachedObj.type == type){
@@ -90,10 +90,6 @@ public class ApiCache {
                 return false;
             }
         }
-
-        cachedObjectsLock.readLock().unlock();
-
-        cachedObjectsLock.writeLock().lock();
 
         cachedObjects.add(new CacheableJson(name, type, value));
 
@@ -119,6 +115,18 @@ public class ApiCache {
 
         cachedObjectsLock.readLock().unlock();
         return outJson;
+    }
+
+    void removeItem(String name){
+        cachedObjectsLock.writeLock().lock();
+
+        for (int i = cachedObjects.size()-1; i >= 0; i--) {
+            if(cachedObjects.get(i).name.equals(name)){
+                cachedObjects.remove(i);
+            }
+        }
+
+        cachedObjectsLock.writeLock().unlock();
     }
 }
 

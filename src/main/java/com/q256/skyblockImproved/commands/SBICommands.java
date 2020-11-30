@@ -22,16 +22,17 @@ public class SBICommands extends CommandBase {
         subCommands.add(new ApiKeyCommand(this));
         subCommands.add(new FakeChatCommand(this));
         subCommands.add(new HelpCommand(this));
-        subCommands.add(new ListInventoriesCommand(this));
         subCommands.add(new SettingCommand(this));
         subCommands.add(new StatsCommand(this));
-        subCommands.add(new ViewInventoryCommand(this));
         subCommands.add(new ReloadConfigCommand(this));
         subCommands.add(new DebugCommand(this));
-        subCommands.add(new ScoreboardCommand(this));
+        subCommands.add(new GuiCommand(this));
+        subCommands.add(new ListInventoriesCommand(this));
         subCommands.add(new PartyListCommand(this));
         subCommands.add(new PlaySoundCommand(this));
         subCommands.add(new StopSoundCommand(this));
+        subCommands.add(new ScoreboardCommand(this));
+        subCommands.add(new ViewInventoryCommand(this));
     }
 
     public String getCommandName() {
@@ -65,9 +66,9 @@ public class SBICommands extends CommandBase {
             }
             TextUtils.sendClientMessage(getCommandUsage(sender));
         }
-        else{
-            main.openGuiScreen = new SettingsGui();
-            if(main.getConfigValues().printCommandHelpOnBaseCommand.getValue())TextUtils.sendClientMessage(getCommandUsage(sender));
+        else {
+            main.openGuiScreen = new SkyblockImprovedGui();
+            if(main.getConfigValues().printCommandHelpOnBaseCommand.getValue()) TextUtils.sendClientMessage(getCommandUsage(sender));
         }
     }
 

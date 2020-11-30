@@ -334,7 +334,7 @@ public class TextUtils {
         return result;
     }
 
-    public static String getLastColorCode(String inString){
+    private static String getLastColorCode(String inString){
         if(inString.length()<2) return null;
 
         int lastIndex = inString.lastIndexOf('§');
@@ -363,5 +363,46 @@ public class TextUtils {
         if(colorCode>='0' && colorCode<='9') return Constants.COLOR_NAMES[colorCode-'0'];
         if(colorCode>='a' && colorCode<='f') return Constants.COLOR_NAMES[colorCode-'a'+10];
         return "Unknown Color";
+    }
+
+    /**
+     * Returns the width of this string.
+     * Almost equivalent to {@link FontRenderer#getStringWidth(String)}
+     * The only difference is a bug fix related to bold strings.
+     */
+    public static int getStringWidth(String text, FontRenderer fontRenderer) {
+        if (text == null) {
+            return 0;
+        } else {
+            int totalWidth = 0;
+            boolean bold = false;
+
+            for (int i = 0; i < text.length(); ++i) {
+                char c0 = text.charAt(i);
+                int charWidth = fontRenderer.getCharWidth(c0);
+
+                if (charWidth < 0 && i < text.length() - 1) {
+                    ++i;
+                    c0 = text.charAt(i);
+
+                    if (c0 == 'l' || c0 == 'L') {
+                        bold = true;
+                    } else if (('a'<=c0 && c0<='f') || ('k'<=c0 && c0<='o') || ('0'<=c0 && c0<='9') || c0 == 'r'
+                            || ('A'<=c0 && c0<='F') || ('K'<=c0 && c0<='O') || c0 == 'R') {
+                        bold = false;
+                    }
+
+                    charWidth = 0;
+                }
+
+                totalWidth += charWidth;
+
+                if (bold && charWidth > 0) {
+                    ++totalWidth;
+                }
+            }
+
+            return totalWidth;
+        }
     }
 }

@@ -43,7 +43,8 @@ public class SettingsScrollPanel extends ScrollablePanel{
                 addLabel(smallWidth/15, currentHeight, setting.getDisplayName(), setting.getDescription());
 
                 if(setting.getType() == Boolean.class){
-                   addButton(settingNumber, (int)(smallWidth*0.7), currentHeight-1, (int)(smallWidth*0.25), fontRendererObj.FONT_HEIGHT+3, setting.getValue().toString());
+                   addButton(settingNumber, (int)(smallWidth*0.7), currentHeight-1, (int)(smallWidth*0.25),
+                           fontRendererObj.FONT_HEIGHT+3, ((Setting<Boolean>)setting).getValue() ? "§aTrue" : "§cFalse");
                 }
                 if(setting.getType() == Double.class){
                     addSlider(settingNumber, (int)(smallWidth*0.7), currentHeight-1, (int)(smallWidth*0.25), fontRendererObj.FONT_HEIGHT+3,
@@ -68,7 +69,7 @@ public class SettingsScrollPanel extends ScrollablePanel{
                 if(setting.getType() == Boolean.class){
                     Setting<Boolean> booleanSetting = (Setting<Boolean>) setting;
                     booleanSetting.setValue(!booleanSetting.getValue());
-                    button.displayString = booleanSetting.getValue().toString();
+                    button.displayString = booleanSetting.getValue() ? "§aTrue" : "§cFalse";
                 }
             }
         }

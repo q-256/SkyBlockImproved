@@ -393,8 +393,9 @@ public class ApiParser {
                 xpPerSkill[i] = 0;
             }
         }
+
         if(!foundAtLeastOneSkill) return getSkillAvgFromAchivs(playerJson, alignHoverText);
-        return getSkillAvgChatComponent(xpPerSkill, alignHoverText);
+        return getSkillAvgChatComponent(xpPerSkill, alignHoverText, playerJson);
     }
 
     private static ChatComponentText getSkillAvgFromAchivs(JsonObject playerJson, boolean alignHoverText){
@@ -410,7 +411,7 @@ public class ApiParser {
             }
         }
 
-        ChatComponentText cct = getSkillAvgChatComponent(xpPerSkill, alignHoverText);
+        ChatComponentText cct = getSkillAvgChatComponent(xpPerSkill, alignHoverText, playerJson);
         cct.getChatStyle().getChatHoverEvent().getValue().appendText("\nSkill info pulled from achievements");
         return cct;
     }
@@ -418,12 +419,26 @@ public class ApiParser {
     /**
      * Only call if {@code xpPerSkill.length == Constants.SKILL_NAMES.length}
      */
-    private static ChatComponentText getSkillAvgChatComponent(int[] xpPerSkill, boolean alignHoverText){
+    private static ChatComponentText getSkillAvgChatComponent(int[] xpPerSkill, boolean alignHoverText, JsonObject playerJson){
+        int[] skillXpReqs = SkillLevels.STANDARD_SKILL_LEVELS;
         double[] skillLvls = new double[Constants.SKILL_NAMES.length];
         int totalXp = 0;
         for (int i = 0; i < xpPerSkill.length; i++) {
-            skillLvls[i] = skillXpToLvl(xpPerSkill[i], SkillLevels.STANDARD_SKILL_LEVELS);
+            skillLvls[i] = skillXpToLvl(xpPerSkill[i], skillXpReqs, 50);
             totalXp += xpPerSkill[i];
+        }
+
+        // Check for farming 50+
+        try {
+            if (skillLvls[0] == 50) {
+                skillLvls[0] = playerJson.getAsJsonObject("achievements").get("skyblock_harvester").getAsInt();
+                /*if(farmingLvl == 60) skillLvls[0] = 60;
+                else {
+                    skillLvls[0] = farmingLvl + (xpPerSkill[0] - skillXpReqs[farmingLvl-1]) / (double)(skillXpReqs[farmingLvl] - skillXpReqs[farmingLvl-1]);
+                }*/
+            }
+        } catch (Exception exception){
+            exception.printStackTrace();
         }
 
         double skillAvg = 0;
@@ -461,14 +476,14 @@ public class ApiParser {
         return cct;
     }
 
-    public static double skillXpToLvl(int xpAmount, int[] xpRequirements){
-        for(int i=0; i<xpRequirements.length; i++){
+    public static double skillXpToLvl(int xpAmount, int[] xpRequirements, int maxLvl){
+        for(int i=0; i<maxLvl; i++){
             if(xpAmount < xpRequirements[i]){
                 if(i==0) return (double)xpAmount/xpRequirements[0];
                 return i + ((double)xpAmount- xpRequirements[i-1])/(xpRequirements[i]- xpRequirements[i-1]);
             }
         }
-        return xpRequirements.length;
+        return maxLvl;
     }
 
     public static ChatComponentText getSlayerXp(JsonObject sbPlayerJson){
@@ -1009,7 +1024,7 @@ public class ApiParser {
     public static ChatComponentText getDungeonXp(JsonObject sbPlayerProfile){
         JsonElement catacombsXp = JsonUtils.get(sbPlayerProfile, "dungeons.dungeon_types.catacombs.experience");
         if(catacombsXp==null || catacombsXp.isJsonNull()) return new ChatComponentText("0");
-        ChatComponentText cct = new ChatComponentText(TextUtils.grayOutAfterDecimal(TextUtils.formatNumberLong(skillXpToLvl(catacombsXp.getAsInt(), SkillLevels.DUNGEON_LEVELS))));
+        ChatComponentText cct = new ChatComponentText(TextUtils.grayOutAfterDecimal(TextUtils.formatNumberLong(skillXpToLvl(catacombsXp.getAsInt(), SkillLevels.DUNGEON_LEVELS, 50))));
 
         //JsonElement selectedClassJson = JsonUtils.get(sbPlayerProfile, "dungeons.selected_dungeon_class");
         //String selectedClass = selectedClassJson==null || selectedClassJson.isJsonNull() ? null : selectedClassJson.getAsString();
@@ -1019,14 +1034,14 @@ public class ApiParser {
         if(classes==null || classes.isJsonNull()) return cct;
 
         hoverText.append("§cCatacombs").append("§b Level: §6");
-        hoverText.append(TextUtils.grayOutAfterDecimal(TextUtils.formatNumberLong(skillXpToLvl(catacombsXp.getAsInt(), SkillLevels.DUNGEON_LEVELS))));
+        hoverText.append(TextUtils.grayOutAfterDecimal(TextUtils.formatNumberLong(skillXpToLvl(catacombsXp.getAsInt(), SkillLevels.DUNGEON_LEVELS, 50))));
 
         for(Map.Entry<String, JsonElement> classEntry:classes.getAsJsonObject().entrySet()){
             hoverText.append('\n');
             //if(classEntry.getKey().equals(selectedClass)) hoverText.append("§b");
             hoverText.append("§c").append(StringUtils.capitalize(classEntry.getKey())).append("§b Level: §6");
             JsonElement experience = classEntry.getValue().getAsJsonObject().get("experience");
-            hoverText.append(experience==null ? 0 : TextUtils.grayOutAfterDecimal(TextUtils.formatNumberLong(skillXpToLvl(experience.getAsInt(), SkillLevels.DUNGEON_LEVELS))));
+            hoverText.append(experience==null ? 0 : TextUtils.grayOutAfterDecimal(TextUtils.formatNumberLong(skillXpToLvl(experience.getAsInt(), SkillLevels.DUNGEON_LEVELS, 50))));
         }
         hoverText.append("\n§cCatacombs").append("§9 Exp: §6");
         hoverText.append(TextUtils.grayOutAfterDecimal(TextUtils.formatNumberLong(catacombsXp.getAsInt())));
@@ -1055,7 +1070,7 @@ public class ApiParser {
             classXp = classXpJson==null ? 0:classXpJson.getAsInt();
         }
 
-        return new ChatComponentText(className + " §6" +TextUtils.grayOutAfterDecimal(TextUtils.formatNumberLong(skillXpToLvl(classXp, SkillLevels.DUNGEON_LEVELS))));
+        return new ChatComponentText(className + " §6" +TextUtils.grayOutAfterDecimal(TextUtils.formatNumberLong(skillXpToLvl(classXp, SkillLevels.DUNGEON_LEVELS, 50))));
     }
 
     public static ChatComponentText getDungeonCompletions(JsonObject sbPlayerJson, JsonObject playerJson){

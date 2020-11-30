@@ -2,6 +2,8 @@ package com.q256.skyblockImproved.constants;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.awt.*;
+
 public enum Rarity {
     COMMON("§f", 75, 75, 75),
     UNCOMMON( "§a", 45, 255, 45),
@@ -16,16 +18,22 @@ public enum Rarity {
     private final String colorCode;
     private final int colorRGB;
     private final String prettyName;
+    private final Color color;
 
     Rarity(String colorCode, int r, int g, int b){
         this.colorCode = colorCode;
         this.colorRGB = (r<<16)+(g<<8)+b;
+        this.color = new Color(colorRGB);
         prettyName = StringUtils.capitalize(this.toString().replace('_',' ').toLowerCase());
     }
 
     public String getColorCode() { return colorCode; }
 
     public int getColorRGB(){return colorRGB;}
+
+    public Color getColor(){
+        return color;
+    }
 
     public String getPrettyName(){return prettyName;}
 

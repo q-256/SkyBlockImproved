@@ -19,7 +19,7 @@ class SettingCommand extends SubCommand {
         mainCommand = sbiCommands;
         main= mainCommand.main;
         name = "setting";
-        requiresDebugMode = false;
+        requiresDebugMode = true;
         shortHelpMessage = "§7/sbi setting [setting] [value] §f- Changes your settings";
     }
 

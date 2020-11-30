@@ -106,7 +106,7 @@ public class ApiHandler {
                     messageTextComponents.add(TextUtils.mergeChatTexts("§bActive Pet: §f", ApiParser.getActivePet(pets)));
                     messageTextComponents.add(TextUtils.mergeChatTexts("§bPet Score: §f", ApiParser.getPetScore(pets, !main.getConfigValues().showAllPets.getValue(), 4)));
                     messageTextComponents.add(TextUtils.mergeChatTexts("§bDungeons completed: §f", ApiParser.getDungeonCompletions(sbPlayerProfile, player)));
-                    messageTextComponents.add(TextUtils.mergeChatTexts("§bCatacombs Xp: §f", ApiParser.getDungeonXp(sbPlayerProfile)));
+                    messageTextComponents.add(TextUtils.mergeChatTexts("§bCatacombs Lvl: §f", ApiParser.getDungeonXp(sbPlayerProfile)));
                     messageTextComponents.add(TextUtils.mergeChatTexts("§bDungeon Class: §f", ApiParser.getDungeonClass(sbPlayerProfile)));
                     if (main.getConfigValues().showAllPets.getValue())
                         messageTextComponents.add(TextUtils.mergeChatTexts("\n§bAll Pets: \n", ApiParser.getPets(ApiParser.getPets(sbPlayerProfile))));
@@ -348,5 +348,14 @@ public class ApiHandler {
             return null;
         }
         return sbProfile.getAsJsonObject("members").getAsJsonObject(uuid);
+    }
+
+    /**
+     * Clears the cache of the given player.
+     * UUIDs are not cleared.
+     * @param playerName The name of the player whose cache will be cleared
+     */
+    public void clearCache(String playerName){
+        apiCache.removeItem(playerName);
     }
 }

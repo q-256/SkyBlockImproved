@@ -25,7 +25,7 @@ public class ListInventoriesCommand extends SubCommand{
     ListInventoriesCommand(SBICommands sbiCommands){
         mainCommand = sbiCommands;
         name = "listInventories";
-        requiresDebugMode = false;
+        requiresDebugMode = true;
         shortHelpMessage = "§7/sbi listInventories <player> §f- Lists all the SkyBlock inventories of the specified player";
     }
 

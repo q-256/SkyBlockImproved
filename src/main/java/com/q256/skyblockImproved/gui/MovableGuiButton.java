@@ -1,8 +1,8 @@
 package com.q256.skyblockImproved.gui;
 
-import net.minecraft.client.gui.GuiButton;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 
-public class MovableGuiButton extends GuiButton implements Movable {
+public class MovableGuiButton extends GuiButtonExt implements Movable {
     int originalX;
     int originalY;
 

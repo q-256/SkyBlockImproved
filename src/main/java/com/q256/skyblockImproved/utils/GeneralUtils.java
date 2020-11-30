@@ -4,7 +4,10 @@ import com.q256.skyblockImproved.SkyblockImproved;
 import com.q256.skyblockImproved.constants.Sounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
@@ -19,6 +22,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class GeneralUtils {
+
     /**
      * Halts the program until the input boolean is true
      */
@@ -182,9 +186,11 @@ public class GeneralUtils {
     public static boolean isUserNameValid(String name){
         return name.matches("^\\w{3,16}$");
     }
+
     public static int parseInt(String string){
         return string.equals("")||string.equals(" ") ? 0:Integer.parseInt(string);
     }
+
     private static class StringInt{
         String string;
         int integer;

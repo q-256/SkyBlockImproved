@@ -205,6 +205,11 @@ public enum PetItem {
             "Crochet Tiger Plushie",
             "§7Increases §e⚔ Bonus Attack Speed §7by §a35",
             Rarity.EPIC
+    ),
+    PET_ITEM_SPOOKY_CUPCAKE(
+            "Spooky Cupcake",
+            "§7Increases §c❁ Strength §7by §a30 §7and §f✦ Speed §7by §a20",
+            Rarity.UNCOMMON
     );
 
 

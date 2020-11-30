@@ -22,7 +22,7 @@ public class ViewInventoryCommand extends SubCommand {
     ViewInventoryCommand(SBICommands sbiCommands){
         mainCommand = sbiCommands;
         name = "viewInventory";
-        requiresDebugMode = false;
+        requiresDebugMode = true;
         shortHelpMessage = "§7/sbi viewInventory <playerName> [inventoryType] [page] §f- View a given player's Skyblock inventories";
     }
 
@@ -119,10 +119,10 @@ public class ViewInventoryCommand extends SubCommand {
                 switch (type){
                     case "inv_contents":
                         inventory = new InventoryBasic(playerDisplayName+"'s "+inventoryDisplayName, true, 45);
-                        for(int ii=0; ii<nbtCompounds.size(); ii++){
-                            NBTTagCompound nbtCompound = nbtCompounds.get(ii);
-                            if(ii<9)inventory.setInventorySlotContents(ii+36, ItemStack.loadItemStackFromNBT(nbtCompound));
-                            else inventory.setInventorySlotContents(ii-9, ItemStack.loadItemStackFromNBT(nbtCompound));
+                        for(int i = 0; i<nbtCompounds.size(); i++){
+                            NBTTagCompound nbtCompound = nbtCompounds.get(i);
+                            if(i<9)inventory.setInventorySlotContents(i+36, ItemStack.loadItemStackFromNBT(nbtCompound));
+                            else inventory.setInventorySlotContents(i-9, ItemStack.loadItemStackFromNBT(nbtCompound));
                         }
                         for(int ii=27; ii<36; ii++){
                             inventory.setInventorySlotContents(ii, ItemUtils.getFillerGlassPane());
@@ -131,37 +131,37 @@ public class ViewInventoryCommand extends SubCommand {
                     case "ender_chest_contents":
                         int inventorySlots = Math.max(Math.min(nbtCompounds.size()-(page-1)*45, 45), 0);
                         inventory = new InventoryBasic(playerDisplayName+"'s "+inventoryDisplayName+" Page "+page, true, inventorySlots);
-                        for(int ii=0; ii<inventorySlots; ii++){
-                            NBTTagCompound nbtCompound = nbtCompounds.get(ii+(page-1)*45);
-                            inventory.setInventorySlotContents(ii, ItemStack.loadItemStackFromNBT(nbtCompound));
+                        for(int i=0; i<inventorySlots; i++){
+                            NBTTagCompound nbtCompound = nbtCompounds.get(i+(page-1)*45);
+                            inventory.setInventorySlotContents(i, ItemStack.loadItemStackFromNBT(nbtCompound));
                         }
                         break;
                     case "wardrobe_contents":
                         int inventorySlots1 = Math.max(Math.min(nbtCompounds.size() - (page - 1) * 36, 36), 0);
                         inventory = new InventoryBasic(playerDisplayName+"'s "+inventoryDisplayName+" Page "+page, true, inventorySlots1);
-                        for(int ii=0; ii<inventorySlots1; ii++){
-                            NBTTagCompound nbtCompound = nbtCompounds.get(ii+(page-1)*36);
-                            inventory.setInventorySlotContents(ii, ItemStack.loadItemStackFromNBT(nbtCompound));
+                        for(int i=0; i<inventorySlots1; i++){
+                            NBTTagCompound nbtCompound = nbtCompounds.get(i+(page-1)*36);
+                            inventory.setInventorySlotContents(i, ItemStack.loadItemStackFromNBT(nbtCompound));
                         }
                         break;
                     default:
                         inventory = new InventoryBasic(playerDisplayName+"'s "+inventoryDisplayName, true, (int)Math.ceil(nbtCompounds.size()/9.0)*9);
-                        for(int ii=0; ii< nbtCompounds.size(); ii++){
-                            NBTTagCompound nbtCompound = nbtCompounds.get(ii);
+                        for(int i=0; i< nbtCompounds.size(); i++){
+                            NBTTagCompound nbtCompound = nbtCompounds.get(i);
                             //admins changed what the API returns so this is no longer necessary
                             /*
-                            if(ii>=nbtCompounds.size()-9 && nbtCompounds.get(ii).hasNoTags()){
-                                if(ii== nbtCompounds.size()-5) inventory.setInventorySlotContents(ii, ItemUtils.getCloseBarrier());
-                                else inventory.setInventorySlotContents(ii, ItemUtils.getFillerGlassPane());
+                            if(i>=nbtCompounds.size()-9 && nbtCompounds.get(i).hasNoTags()){
+                                if(i== nbtCompounds.size()-5) inventory.setInventorySlotContents(i, ItemUtils.getCloseBarrier());
+                                else inventory.setInventorySlotContents(i, ItemUtils.getFillerGlassPane());
                             }
                             else */
-                            inventory.setInventorySlotContents(ii, ItemStack.loadItemStackFromNBT(nbtCompound));
+                            inventory.setInventorySlotContents(i, ItemStack.loadItemStackFromNBT(nbtCompound));
                         }
                         break;
                 }
 
-                mainCommand.main.openGuiScreen = new NonInteractableInventory(inventory, mainCommand.main.getConfigValues().showRarityBackground.getValue(),
-                        (int)(mainCommand.main.getConfigValues().rarityBackgroundAlpha.getValue()*255));
+                mainCommand.main.openGuiScreen = new NonInteractableInventory(inventory, mainCommand.main.getConfigValues().showRarityInCustomInv.getValue(),
+                        (int)(mainCommand.main.getConfigValues().customInvRarityAlpha.getValue()*255));
             } catch (IOException exception){
                 exception.printStackTrace();
                 TextUtils.sendClientMessage("Something went wrong while parsing inventory data");

@@ -58,13 +58,13 @@ public class LividListener {
                     if(matcher1.find()){
                         seenColors.add(matcher1.group(1).charAt(0));
                     }
-                } else {
+                } /*else {
                     if(displayName.contains("Livid"))System.out.println(entity.getClass() + " name: " + displayName);
-                }
+                }*/
             }
 
-            System.out.println("Seen colors: "+seenColors);
-            System.out.println("Predicted Colors: "+predictedColors);
+            //System.out.println("Seen colors: "+seenColors);
+            //System.out.println("Predicted Colors: "+predictedColors);
             if(seenColors.size()==8){
                 for(char color: Constants.LIVID_COLORS){
                     if(!seenColors.contains(color)) predictedColors.merge(color, 1, Integer::sum);
